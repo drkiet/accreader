@@ -1,0 +1,172 @@
+Q: A statistical section should be included in
+
+A comprehensive annual financial report (CAFR).
+The basic financial statements.
+The notes to the financial statements.
+Required supplementary information, other than MD&A.
+
+A: 1
+
+Q: On what do the government-wide financial statements report?
+
+Operational accountability.
+Fiscal accountability.
+The cost of government services.
+Budgetary compliance
+
+A: 1
+
+Q: One of the minimum requirements for general purpose external financial reporting by governments is:
+
+Management's discussion and analysis (MD&A).
+Transmittal letter.
+Combining and individual fund statements.
+Statistical information.
+
+A: 1
+
+Q: The section of the comprehensive annual financial report that presents tables and charts showing social and economic data in addition to financial trends, fiscal capacity, and operating information of the government is the:
+
+Introductory section.
+Management's discussion and analysis section.
+Statistical section.
+Financial section.
+
+A: 3
+
+Q: Which of the following sections is not considered a part of a federal agency’s performance and accountability report?
+
+Basic financial statements.
+Annual performance report.
+Statistical section.
+Management's discussion and analysis.
+
+A: 3
+
+Q: Which of the following should be included in the financial section of a comprehensive annual financial report?
+
+Transmittal letter.
+The basic financial statements, including notes thereto.
+Tables and charts showing demographic and economic data.
+A description of the government.
+
+A: 2
+
+Q: You are trying to decide if an entity you are reviewing is a government or a not-for-profit. Which of the following would indicate it is a government rather than a not-for-profit entity?
+
+Absence of profit motive.
+A primary source of revenues is taxes.
+Resource providers do not expect benefits proportional to the resources provided.
+Absence of a defined ownership interest that can be sold, transferred, or redeemed.
+
+A: 2
+
+Q: Which of the following statements is prepared by all not-for-profit organizations?
+
+Statement of financial position.
+Statement of functional expenses.
+Statement of revenues, expenses, and changes in net position.
+Both A and B.
+
+A: 1
+
+Q: Recognizing revenues when measurable and available for paying current obligations and expenditures when incurred describes which basis of accounting?
+
+Accrual.
+Modified accrual.
+Modified cash.
+Budgetary.
+
+A: 2
+
+Q: The FASB requires that a statement of functional expenses be prepared by which of the following entities?
+
+Colleges and universities.
+Health care entities.
+Voluntary health and welfare entities.
+Religious entities.
+
+A: 3
+
+Q: Which of the following is not an example of a support expense reported by not-for-profit entities?
+
+Fund-raising expenses.
+Program expenses.
+Management expenses.
+General expenses of operating the not-for-profit entity.
+
+A: 2
+
+Q: Which of the following groups is considered a primary user of a state or local government's general-purpose external financial statements?
+
+Citizens.
+Managers and administrators.
+Employees.
+Special interest groups.
+
+A: 1
+
+Q: Which of the following is identified by the GASB as the "cornerstone" of all financial reporting in government?
+
+Decision usefulness.
+Stewardship.
+Accountability.
+Interperiod equity.
+
+A: 3
+
+Q: Which of the following would be included in a properly prepared comprehensive annual financial report (CAFR), but not in the minimum requirements for general purpose financial reporting specified by GASB standards?
+
+Management's discussion and analysis (MD&A).
+Government-wide financial statements.
+Notes to the financial statements.
+Combining and individual fund financial statements.
+
+A: 4
+
+Q: Which of the following is not an objective of financial reporting by state and local governments?
+
+To assist users in assessing the adequacy of systems and controls.
+To assist users in assessing financial condition and results of operations.
+To assist financial report users in comparing actual financial results with the legally adopted budget.
+To assist in determining compliance with finance-related laws, rules, and regulations.
+
+A: 1
+
+Q: A comprehensive annual financial report (CAFR) prepared in conformity with GASB recommendations should include which of the following sections?
+
+Letter of transmittal, management's discussion and analysis (MD&A), and financial.
+Introductory, financial, and statistical.
+Introductory, MD&A, and financial.
+Letter of transmittal, financial, and supplementary.
+
+A: 2
+
+Q: On what should the governmental fund financial statements report?
+
+Net position and results of financial operations of the government as a whole.
+Fiscal accountability.
+Operational accountability.
+Cost of government services.
+
+A: 2
+
+Q: The Governmental Accounting Standards Board is assigned responsibility for setting accounting and financial reporting standards for
+
+Governments such as federal agencies, states, cities, counties, villages, and townships.
+State and local government entities and governmentally-related units and agencies, such as utilities, authorities, hospitals, and colleges and universities.
+Not-for-profit organizations.
+State and local governments and all not-for-profit organization
+
+A: 2
+
+Q: The body that has been established to recommend accounting and financial reporting standards for the federal government is the
+
+Financial Accounting Standards Board (FASB).
+Governmental Accounting Standards Board (GASB).
+Federal Accounting Foundation (FAF).
+Federal Accounting Standards Advisory Board (FASAB).
+
+A: 4
+
+

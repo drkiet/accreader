@@ -1,0 +1,35 @@
+A Help for the Speed Reader Program:
+
+1. Reading Method 1: Cut & Paste Text
+  - Cut and paste text elsewhere into the text area on the right.
+  - Click on the Read button.
+
+2. Reading Method 2: Loading from a file (text, doc, docx, pdf, etc.)
+  - Enter Fully-qualified file name on the left panel (or use the Browser button).
+  - Click the Load button.
+  - Wait for the text to load to text area on the right panel.
+  - Click on the Read button.
+
+3. Speed: Setting up the reading speed.
+  - Enter the speed (word per minute).
+  - Click the Set button.
+
+4. Stop: Stop the reader.
+  - Click the Stop button.
+
+5. Read: Continue reading where it was left off
+  - Click the Read button.
+  
+6. Read At: Continue reading at the current cursor in the text area
+  - Click the Read At button.
+			
+7. Reset: Stop the reading and clear out the current reading text.
+  - Click the Reset button to clear out the text area on the right.
+  - This help text is in the displaying text area.
+
+8. Search: Search for text in the text area.
+  - Enter the text to search in the 'Text' box.
+  - Click the Search button.
+  
+9. Author: code is located @ https://github.com/drkiet/speedreader
+  - Kiet T. Tran(C), 2017-2018.
