@@ -2,31 +2,31 @@ package com.drkiet.accreader.definition;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Caret;
 import javax.swing.text.Element;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.drkiet.accreader.reference.ReferencesFrame;
 import com.drkiet.accreader.reference.ReferencesPanel;
+import com.drkiet.accreader.util.FileHelper;
 import com.drkiet.accreader.util.WebHelper;
 import com.drkiettran.text.util.CommonUtils;
 
@@ -42,8 +42,16 @@ public class DefinitionPanel extends JPanel {
 	private String accDefinition;
 	private String highlightedText = "";
 	private ReferencesFrame referencesFrame;
+	private HashMap<String, String> toolsDict;
+	private HashMap<String, String> coachDict;
+	private List<String> toolsKeys = new ArrayList<String>();
+	private List<String> coachKeys = new ArrayList<String>();
+	private Object dictDefinitions;
+
+	private static final String[] DICTIONARY_SITE = { "terms-accounting-tools.dic", "terms-accounting-coach.dic" };
 
 	public DefinitionPanel() {
+		loadDictionaries();
 		definitionPane = new JTextPane();
 		definitionPane.setCaretPosition(0);
 		definitionPane.setCaretColor(Color.WHITE);
@@ -55,16 +63,59 @@ public class DefinitionPanel extends JPanel {
 		setBorder();
 	}
 
+	public void loadDictionaries() {
+		try {
+			toolsDict = FileHelper.loadDictionary(FileHelper.getWorkspaceFolder(), DICTIONARY_SITE[0]);
+			coachDict = FileHelper.loadDictionary(FileHelper.getWorkspaceFolder(), DICTIONARY_SITE[1]);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		Iterator<String> keys = toolsDict.keySet().iterator();
+		while (keys.hasNext()) {
+			toolsKeys.add(keys.next());
+		}
+
+		keys = coachDict.keySet().iterator();
+		while (keys.hasNext()) {
+			coachKeys.add(keys.next());
+		}
+
+		Collections.sort(toolsKeys);
+		Collections.sort(coachKeys);
+	}
+
 	public void setDefinition(String text) {
 		this.definition = CommonUtils.getDefinitionForWord(text);
 		this.accDefinition = WebHelper.getAccDefinitionForWord(text);
+		this.dictDefinitions = getListOfTermsContains(text);
 		displayDefinition();
+	}
+
+	private String getListOfTermsContains(String text) {
+		StringBuilder sb = new StringBuilder("<br><br><b>").append(DICTIONARY_SITE[0]).append("</b>: <br>");
+
+		for (String key : toolsKeys) {
+			if (key.contains(text)) {
+				sb.append(String.format("<a href=\"%s\">", toolsDict.get(key))).append(key).append("</a><br>");
+			}
+		}
+
+		sb.append("<br>").append("<b>").append(DICTIONARY_SITE[1]).append("</b>: <br>");
+		for (String key : coachKeys) {
+			if (key.contains(text)) {
+				sb.append(String.format("<a href=\"%s\">", coachDict.get(key))).append(key).append("</a><br>");
+			}
+		}
+		return sb.toString();
 	}
 
 	public void displayDefinition() {
 		StringBuilder sb = new StringBuilder("<html>");
 		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(definition).append(FONT_END);
 		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(accDefinition).append(FONT_END);
+		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(dictDefinitions).append(FONT_END);
 
 		definitionPane.setText(sb.toString());
 		definitionPane.setCaretPosition(0);

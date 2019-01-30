@@ -47,6 +47,7 @@ public class MainFrame extends JFrame {
 	private String searchText = null;
 	private String selectedBookName = null;
 	private String selectedTranslation = null;
+	private String refName;
 
 	public MainFrame() throws IOException {
 		super("Accounting Reader");
@@ -203,6 +204,11 @@ public class MainFrame extends JFrame {
 		switch (cmd) {
 		case LOAD:
 			loadSelectedBook();
+			break;
+		case LOAD_REF:
+			refName = formPanel.getRefBook();
+			textPanel.setRefBook(refName);
+			LOGGER.info("Loading Reference: {}", refName);
 			break;
 		case SELECT_BOOK:
 			selectedBookName = formPanel.getSelectedBookName();

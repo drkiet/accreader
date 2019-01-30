@@ -22,10 +22,11 @@ public class ReferencesFrame extends JFrame {
 	private DefinitionFrame definitionFrame;
 	private Document document;
 	private InfoPanel infoPanel;
+	private String refName = "";
 
 	public ReferencesFrame() {
 		setLayout(new BorderLayout());
-		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName());
+		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName(refName));
 		setSize(600, 500);
 		referencesPanel = new ReferencesPanel();
 		referencesToolbarPanel = new ReferencesToolbarPanel();
@@ -70,9 +71,15 @@ public class ReferencesFrame extends JFrame {
 	public void setDefinitionFrame(DefinitionFrame definitionFrame) {
 		this.definitionFrame = definitionFrame;
 		referencesPanel.setDefinitionFrame(definitionFrame);
+		referencesPanel.setReferencesFrame(this);
 	}
 
 	public void setInfoPanel(InfoPanel infoPanel) {
 		this.infoPanel = infoPanel;
+	}
+
+	public void setRefBook(String refName) {
+		this.refName = refName;
+		referencesPanel.setRefBook(refName);
 	}
 }

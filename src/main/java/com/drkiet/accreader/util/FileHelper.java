@@ -7,7 +7,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -122,8 +126,8 @@ public class FileHelper {
 		return String.format("%s%s%s", getAccReaderFolder(), File.separator, bookName);
 	}
 
-	public static String getFQRefencesFileName() {
-		return getFQFileName(getRefencesFileName());
+	public static String getFQRefencesFileName(String refName) {
+		return getFQFileName(refName);
 	}
 
 	public static String getRefencesFileName() {
@@ -136,5 +140,28 @@ public class FileHelper {
 
 	public static String getWSReferencesFileName() {
 		return String.format("%s%s%s", getWorkspaceFolder(), File.separator, getRefencesFileName());
+	}
+
+	public static HashMap<String, String> loadDictionary(String path, String fileName) throws IOException {
+		HashMap<String, String> dict = new HashMap<String, String>();
+		List<String> lines = Files.readAllLines(Paths.get(path, fileName), Charset.forName("ISO-8859-1"));
+		int count = 1;
+
+		for (String line : lines) {
+			if (line.trim().isEmpty()) {
+				continue;
+			}
+
+			int index = line.indexOf(":");
+			String key = line.substring(0, index).toLowerCase();
+			String value = line.substring(index + 1).trim();
+			if (dict.get(key) != null) {
+				LOGGER.info("*** COLLISION ON {} ***", key);
+				key += count++;
+			}
+			dict.put(key, value);
+		}
+
+		return dict;
 	}
 }

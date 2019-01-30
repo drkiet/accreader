@@ -40,11 +40,12 @@ public class ReferencesPanel extends JPanel {
 	private DefinitionFrame definitionFrame;
 	private String accDefinition = null;
 	private DocumentSearch ds;
-
 	private String searchText;
+	private ReferencesFrame referencesFrame;
+	private String refName = "";
 
 	public ReferencesPanel() {
-		loadRefsDocument();
+//		loadRefsDocument();
 		referencesPane = new JTextPane();
 		referencesPane.setCaretPosition(0);
 		referencesPane.setCaretColor(Color.WHITE);
@@ -90,7 +91,9 @@ public class ReferencesPanel extends JPanel {
 				if (referencesPane.getSelectedText() != null) { // See if they selected something
 					highlightedText = referencesPane.getSelectedText().trim();
 					if (referencePageFrame == null) {
-						referencePageFrame = new ReferencePageFrame();
+						referencePageFrame = new ReferencePageFrame(refName);
+						referencePageFrame.setReferencesFrame(referencesFrame);
+						referencePageFrame.setDefinitionFrame(definitionFrame);
 					}
 					referencePageFrame.setPageNumber(Integer.valueOf(highlightedText), searchText);
 					LOGGER.info("highlighted page: {} for {}", highlightedText, searchText);
@@ -101,7 +104,7 @@ public class ReferencesPanel extends JPanel {
 	}
 
 	private void loadRefsDocument() {
-		ds = DocumentSearch.getInstance(FileHelper.getFQRefencesFileName(), FileHelper.getWorkspaceFolder());
+		ds = DocumentSearch.getInstance(FileHelper.getFQRefencesFileName(refName), FileHelper.getWorkspaceFolder());
 	}
 
 	public void setText(String text) {
@@ -200,5 +203,20 @@ public class ReferencesPanel extends JPanel {
 
 	public void setDefinitionFrame(DefinitionFrame definitionFrame) {
 		this.definitionFrame = definitionFrame;
+	}
+
+	public void setReferencesFrame(ReferencesFrame referencesFrame) {
+		this.referencesFrame = referencesFrame;
+	}
+
+	public void setRefBook(String refName) {
+		this.refName = refName;
+		if (referencePageFrame == null) {
+			referencePageFrame = new ReferencePageFrame(refName);
+			referencePageFrame.setReferencesFrame(referencesFrame);
+			referencePageFrame.setDefinitionFrame(definitionFrame);
+		}
+		referencePageFrame.setRefBook(refName);
+		loadRefsDocument();
 	}
 }

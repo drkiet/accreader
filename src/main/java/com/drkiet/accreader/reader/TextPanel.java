@@ -386,6 +386,8 @@ public class TextPanel extends JPanel {
 
 	private MainFrame mainFrame;
 
+	private String refName;
+
 	public void skipArticle(boolean skipArticle) {
 		this.skipArticle = skipArticle;
 	}
@@ -532,6 +534,8 @@ public class TextPanel extends JPanel {
 			}
 		}
 		displaySearchResult();
+		referencesFrame.setText(searchText);
+		definitionFrame.setDefinition(searchText);
 	}
 
 	public void setInfo(String info) {
@@ -647,5 +651,10 @@ public class TextPanel extends JPanel {
 
 	public void setMainFrame(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
+	}
+
+	public void setRefBook(String refName) {
+		this.refName = refName;
+		referencesFrame.setRefBook(refName);
 	}
 }

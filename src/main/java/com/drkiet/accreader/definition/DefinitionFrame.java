@@ -56,7 +56,7 @@ public class DefinitionFrame extends JFrame {
 	}
 
 	public void setDefinition(String word) {
-		definitionPanel.setDefinition(word);
+		definitionPanel.setDefinition(word.toLowerCase());
 	}
 
 	public void setReferencesFrame(ReferencesFrame referencesFrame) {

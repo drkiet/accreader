@@ -22,24 +22,45 @@ public class WebHelper {
 	private static final String THE_NYSCPA_TERM_WEBSITE = "https://www.nysscpa.org/professional-resources/accounting-terminology-guide";
 	private static final String THE_ACCOUNTING_TOOLS_DICTIONARY = "https://www.accountingtools.com/terms-%s";
 	private static final String XPATH_TERM_TEXT = "//div[@id='main']/div[@class='sfContentBlock']";
+	private static final String XPATH_DICT_TERM = "//div[@id='dictionary-term']";
+	private static final String XPATH_MAIN_CONTENT = "//div[@class='main-content']";
 
-	public static List<String> getAccountingTerms() throws Exception {
+	public static List<String> getNysscpaTerms() throws Exception {
 		WebDriver driver = new HtmlUnitDriver();
 		driver.get(THE_NYSCPA_TERM_WEBSITE);
 		List<WebElement> sections = driver.findElements(By.xpath(XPATH_TERM_TEXT));
 		List<String> definedTerms = new ArrayList<String>();
 
+		int count = 1;
 		for (WebElement section : sections) {
-			List<WebElement> terms = filterEmptyWebElements(section.findElements(By.tagName("h3")));
-			List<WebElement> definitions = filterEmptyWebElements(section.findElements(By.tagName("p")));
+			List<WebElement> terms = filterEmptyWebElements(section.findElements(By.xpath("//h3")));
+			terms = driver.findElements(By.xpath(".//*"));
+			for (WebElement term : terms) {
+				System.out.println(term.getTagName() + ":" + term.getText());
+			}
+			terms = filterEmptyWebElements(section.findElements(By.xpath("//h3")));
+			for (WebElement term : terms) {
+				String text = term.getText();
 
-			if (terms.size() != definitions.size()) {
-				throw new Exception("*** PROBLEM ***");
+				if (text == null || text.trim().isEmpty()) {
+					continue;
+				}
+				StringBuilder sb = new StringBuilder(text).append(": ");
+				List<WebElement> definitions = term.findElements(By.xpath("/following-sibling::p"));
+
+				for (WebElement definition : definitions) {
+					String defText = definition.getText();
+					if (defText == null || defText.trim().isEmpty()) {
+						continue;
+					}
+					sb.append(defText).append("<br> ");
+
+				}
+				definedTerms.add(sb.toString());
+				LOGGER.info("*** {} ***", sb.toString());
 			}
 
-			for (int idx = 0; idx < terms.size(); idx++) {
-				definedTerms.add(String.format("%s: %s", terms.get(idx).getText(), definitions.get(idx).getText()));
-			}
+			count++;
 		}
 
 		return definedTerms;
@@ -130,7 +151,66 @@ public class WebHelper {
 		if (!divs.isEmpty()) {
 			return divs.get(0).getAttribute("innerHTML");
 		}
+
+		divs = driver.findElements(By.xpath(XPATH_DICT_TERM));
+		if (!divs.isEmpty()) {
+			return divs.get(0).getAttribute("innerHTML");
+		}
+
+		divs = driver.findElements(By.xpath(XPATH_MAIN_CONTENT));
+		if (!divs.isEmpty()) {
+			return divs.get(0).getAttribute("innerHTML");
+		}
+
 		return "*** NOT FOUND ***";
+	}
+
+	public static List<String> getAccountingToolsTerms() {
+		char ch = 'a';
+		String prefixUrl = "https://www.accountingtools.com/terms-";
+		String xpath = "//div[@class='sqs-block-content']//li//a";
+		List<String> termsWithUrls = new ArrayList<String>();
+		WebDriver driver = new HtmlUnitDriver();
+
+		while (ch != 'w') {
+			String url = prefixUrl + ch;
+			ch++;
+			driver.get(url);
+			List<WebElement> as = driver.findElements(By.xpath(xpath));
+			for (WebElement a : as) {
+				termsWithUrls.add(a.getText() + ": " + a.getAttribute("href"));
+				LOGGER.info("*** {} ***", termsWithUrls.get(termsWithUrls.size() - 1));
+			}
+		}
+		String url = prefixUrl + "xyz";
+		driver.get(url);
+		List<WebElement> as = driver.findElements(By.xpath(xpath));
+		for (WebElement a : as) {
+			termsWithUrls.add(a.getText() + ": " + a.getAttribute("href"));
+			LOGGER.info("*** {} ***", termsWithUrls.get(termsWithUrls.size() - 1));
+		}
+		return termsWithUrls;
+	}
+
+	public static List<String> getAccountingCoachTerms() {
+		char ch = 'A';
+		String prefixUrl = "https://www.accountingcoach.com/terms/";
+		List<String> termsWithUrls = new ArrayList<String>();
+		WebDriver driver = new HtmlUnitDriver();
+		while (ch != 'W') {
+			String url = prefixUrl + ch;
+			driver.get(url);
+			String xpath = String.format("//h4[text()='Letter %c']/..//a[contains(@href,'accountingcoach.com/terms/')]",
+					ch);
+			List<WebElement> as = driver.findElements(By.xpath(xpath));
+			for (WebElement a : as) {
+				termsWithUrls.add(a.getText() + ": " + a.getAttribute("href"));
+				LOGGER.info("*** {} ***", termsWithUrls.get(termsWithUrls.size() - 1));
+			}
+			ch++;
+
+		}
+		return termsWithUrls;
 	}
 
 }

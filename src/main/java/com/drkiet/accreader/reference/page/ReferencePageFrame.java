@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.drkiet.accreader.definition.DefinitionFrame;
 import com.drkiet.accreader.reader.InfoPanel;
 import com.drkiet.accreader.reference.ReaderListener.Command;
+import com.drkiet.accreader.reference.ReferencesFrame;
 import com.drkiet.accreader.util.FileHelper;
 import com.drkiet.accreader.util.ScreenPositions;
 
@@ -20,12 +21,15 @@ public class ReferencePageFrame extends JFrame {
 	private ReferencePageToolbarPanel referencePageToolbarPanel;
 	private DefinitionFrame definitionFrame;
 	private InfoPanel infoPanel;
+	private ReferencesFrame referencesFrame;
+	private String refName = "";
 
-	public ReferencePageFrame() {
+	public ReferencePageFrame(String refName) {
+		this.refName = refName;
 		setLayout(new BorderLayout());
-		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName());
+		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName(refName));
 		setSize(600, 500);
-		referencePagePanel = new ReferencePagePanel(FileHelper.getFQRefencesFileName());
+		referencePagePanel = new ReferencePagePanel(FileHelper.getFQRefencesFileName(refName));
 		referencePageToolbarPanel = new ReferencePageToolbarPanel();
 
 		referencePageToolbarPanel.setReaderListener((Command cmd) -> {
@@ -72,5 +76,15 @@ public class ReferencePageFrame extends JFrame {
 
 	public void setInfoPanel(InfoPanel infoPanel) {
 		this.infoPanel = infoPanel;
+	}
+
+	public void setReferencesFrame(ReferencesFrame referencesFrame) {
+		this.referencesFrame = referencesFrame;
+		referencePagePanel.setReferencesFrame(referencesFrame);
+	}
+
+	public void setRefBook(String refName) {
+		this.refName = refName;
+		referencePagePanel.setRefName(refName);
 	}
 }

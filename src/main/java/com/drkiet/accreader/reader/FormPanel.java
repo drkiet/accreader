@@ -47,6 +47,7 @@ public class FormPanel extends JPanel {
 	private JButton setButton;
 	private Integer speedWpm = 200;
 	private String bookName;
+	private String refName;
 	private String text;
 	private ReaderListener readerListener;
 	private Document document = null;
@@ -56,6 +57,9 @@ public class FormPanel extends JPanel {
 	private JLabel pageNoTextLabel;
 	private JButton nextFindButton;
 	private JComboBox<String> translationComboBox;
+	private JLabel refNameLabel;
+	private JComboBox<String> refNameComboBox;
+	private JButton loadButton = null;
 
 	public String getLoadingError() {
 		return loadingError;
@@ -77,37 +81,19 @@ public class FormPanel extends JPanel {
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
 		setPreferredSize(dim);
+		makeComboBoxes();
+		makeComponents();
 
-		bookNameLabel = new JLabel("Select a book: ");
-		bookNameComboBox = new JComboBox<String>();
-		bookNameComboBox.setPrototypeDisplayValue("default text here");
+		setListeners();
 
-		List<String> fileNames = getListOfFileNames();
+		Border innerBorder = BorderFactory.createTitledBorder("Settings");
+		Border outterBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+		setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
 
-		for (String fileName : fileNames) {
-			bookNameComboBox.addItem(fileName);
-		}
+		layoutComponents();
+	}
 
-		ComboboxToolTipRenderer renderer = new ComboboxToolTipRenderer();
-		bookNameComboBox.setRenderer(renderer);
-		renderer.setTooltips(fileNames);
-
-		speedLabel = new JLabel("Speed (wpm): ");
-		speedField = new JTextField(10);
-		searchTextLabel = new JLabel("Text");
-		searchTextField = new JTextField(10);
-		pageNoTextLabel = new JLabel("Page No.");
-		pageNoTextField = new JTextField(10);
-		speedField.setText("" + speedWpm);
-		skipArticleLabel = new JLabel("Skip articles: ");
-
-		skipArticleCheckBox = new JCheckBox();
-		setButton = new JButton("Set");
-		openButton = new JButton("Open");
-		searchButton = new JButton("Search");
-		nextFindButton = new JButton("Next");
-		goToPageNoButton = new JButton("Go to");
-
+	public void setListeners() {
 		setButton.addActionListener((ActionEvent actionEvent) -> {
 			speedWpm = Integer.valueOf(speedField.getText());
 		});
@@ -128,6 +114,11 @@ public class FormPanel extends JPanel {
 			readerListener.invoke(Command.LOAD);
 		});
 
+		loadButton.addActionListener((ActionEvent actionEvent) -> {
+			refName = (String) refNameComboBox.getSelectedItem();
+			readerListener.invoke(Command.LOAD_REF);
+		});
+
 		searchButton.addActionListener((ActionEvent actionEvent) -> {
 			readerListener.invoke(Command.SEARCH);
 		});
@@ -143,12 +134,55 @@ public class FormPanel extends JPanel {
 		bookNameComboBox.addActionListener((ActionEvent actionEvent) -> {
 			readerListener.invoke(Command.SELECT_BOOK);
 		});
+	}
 
-		Border innerBorder = BorderFactory.createTitledBorder("Settings");
-		Border outterBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
-		setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
+	public void makeComponents() {
+		speedLabel = new JLabel("Speed (wpm): ");
+		speedField = new JTextField(10);
+		searchTextLabel = new JLabel("Text");
+		searchTextField = new JTextField(10);
+		pageNoTextLabel = new JLabel("Page No.");
+		pageNoTextField = new JTextField(10);
+		speedField.setText("" + speedWpm);
+		skipArticleLabel = new JLabel("Skip articles: ");
 
-		layoutComponents();
+		skipArticleCheckBox = new JCheckBox();
+		setButton = new JButton("Set");
+		openButton = new JButton("Open");
+		loadButton = new JButton("Load Ref.");
+		searchButton = new JButton("Search");
+		nextFindButton = new JButton("Next");
+		goToPageNoButton = new JButton("Go to");
+	}
+
+	public void makeComboBoxes() {
+		bookNameLabel = new JLabel("Select a book: ");
+		bookNameComboBox = new JComboBox<String>();
+		bookNameComboBox.setPrototypeDisplayValue("default text here");
+
+		List<String> fileNames = getListOfFileNames();
+
+		for (String fileName : fileNames) {
+			bookNameComboBox.addItem(fileName);
+		}
+
+		ComboboxToolTipRenderer renderer = new ComboboxToolTipRenderer();
+		bookNameComboBox.setRenderer(renderer);
+		renderer.setTooltips(fileNames);
+
+		// Reference books.
+
+		refNameLabel = new JLabel("Ref. book: ");
+		refNameComboBox = new JComboBox<String>();
+		refNameComboBox.setPrototypeDisplayValue("default text here");
+
+		for (String fileName : fileNames) {
+			refNameComboBox.addItem(fileName);
+		}
+
+		renderer = new ComboboxToolTipRenderer();
+		refNameComboBox.setRenderer(renderer);
+		renderer.setTooltips(fileNames);
 	}
 
 	private List<String> getListOfFileNames() {
@@ -209,7 +243,7 @@ public class FormPanel extends JPanel {
 		add(skipArticleCheckBox, gc);
 
 		// Always do the following to avoid future confusion :)
-		// Book Name
+		// Book Name:
 		gc.gridy++;
 		gc.weightx = 1;
 		gc.weighty = 0.1;
@@ -235,6 +269,33 @@ public class FormPanel extends JPanel {
 		add(openButton, gc);
 
 		// Always do the following to avoid future confusion :)
+		// Reference Book Name:
+		gc.gridy++;
+		gc.weightx = 1;
+		gc.weighty = 0.1;
+
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(0, 0, 0, 5);
+		add(refNameLabel, gc);
+
+		gc.gridx = 1;
+		gc.insets = new Insets(0, 0, 0, 0);
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(refNameComboBox, gc);
+
+		//// next row /////////////
+		gc.gridy++;
+		gc.weightx = 1;
+		gc.weighty = .2;
+
+		gc.gridx = 1;
+		gc.insets = new Insets(0, 0, 0, 0);
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		add(loadButton, gc);
+
+		// Always do the following to avoid future confusion :)
+		// Search Text:
 		gc.gridy++;
 		gc.weightx = 1;
 		gc.weighty = 0.1;
@@ -270,6 +331,7 @@ public class FormPanel extends JPanel {
 		add(nextFindButton, gc);
 
 		// Always do the following to avoid future confusion :)
+		// Goto page:
 		gc.gridy++;
 		gc.weightx = 1;
 		gc.weighty = 0.1;
@@ -350,5 +412,9 @@ public class FormPanel extends JPanel {
 	public boolean skipArticle() {
 		LOGGER.info("skip articles ... {}", skipArticleCheckBox.isSelected());
 		return skipArticleCheckBox.isSelected();
+	}
+
+	public String getRefBook() {
+		return refName;
 	}
 }

@@ -13,13 +13,18 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Utilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.drkiet.accreader.definition.DefinitionFrame;
 import com.drkiet.accreader.definition.DefinitionPanel;
+import com.drkiet.accreader.reference.ReferencesFrame;
 import com.drkiet.search.DocumentSearch;
 import com.drkiettran.text.TextApp;
 import com.drkiettran.text.model.Document;
@@ -34,17 +39,21 @@ public class ReferencePagePanel extends JPanel {
 	private int textPaneFontSize = 4;
 	private String textPaneFont = "Candara";
 	private String refPageText = null;
+	private ReferencesFrame referencesFrame;
 	private DefinitionFrame definitionFrame;
 	private Document document = null;
 	private DocumentSearch ds;
-
-	private String contentFileName;
-
+	private String highlightedText;
 	private Integer pageNumber;
 
-	public ReferencePagePanel(String contentFileName) {
-		this.contentFileName = contentFileName;
-		loadRefsDocument();
+	private String refName;
+
+	public ReferencePagePanel(String refName) {
+		this.refName = refName;
+
+		if (refName != null && !refName.trim().isEmpty()) {
+			loadRefsDocument();
+		}
 		referencePagePane = new JTextPane();
 		referencePagePane.setCaretPosition(0);
 		referencePagePane.setCaretColor(Color.WHITE);
@@ -59,12 +68,13 @@ public class ReferencePagePanel extends JPanel {
 	private MouseListener getMouseListner() {
 		return new MouseListener() {
 
-			private Object highlightedText;
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
+				String word = getWordAtCaret(referencePagePane);
+				if (SwingUtilities.isRightMouseButton(e)) {
+					LOGGER.info("definition for: {}", word);
+					displayDefinitions(word);
+				}
 			}
 
 			@Override
@@ -90,10 +100,30 @@ public class ReferencePagePanel extends JPanel {
 				if (referencePagePane.getSelectedText() != null) { // See if they selected something
 					highlightedText = referencePagePane.getSelectedText().trim();
 					LOGGER.info("highlighted text: {}", highlightedText);
+					referencesFrame.setText(highlightedText);
 				}
 			}
 
 		};
+	}
+
+	private void displayDefinitions(String word) {
+		definitionFrame.setTitle(
+				String.format("Document: %s %d", document.getBookFileName(), document.getCurrentPageNumber()));
+		definitionFrame.setDefinition(word);
+	}
+
+	private static String getWordAtCaret(JTextComponent tc) {
+		try {
+			int caretPosition = tc.getCaretPosition();
+			int start = Utilities.getWordStart(tc, caretPosition);
+			int end = Utilities.getWordEnd(tc, caretPosition);
+			return tc.getText(start, end - start);
+		} catch (BadLocationException e) {
+			System.err.println(e);
+		}
+
+		return null;
 	}
 
 	private void loadRefsDocument() {
@@ -103,13 +133,13 @@ public class ReferencePagePanel extends JPanel {
 	private Document loadDocumentFromFile() {
 		TextApp textApp = new TextApp();
 
-		Document document = textApp.getPages(contentFileName);
+		Document document = textApp.getPages(refName);
 		if (document == null) {
 		} else {
-			LOGGER.info("{} has {} pages", contentFileName, document.getPageCount());
+			LOGGER.info("{} has {} pages", refName, document.getPageCount());
 		}
 
-		document.setBookFileName(contentFileName);
+		document.setBookFileName(refName);
 		return document;
 	}
 
@@ -218,5 +248,13 @@ public class ReferencePagePanel extends JPanel {
 			}
 		}
 		return startHighlightedLocs;
+	}
+
+	public void setReferencesFrame(ReferencesFrame referencesFrame) {
+		this.referencesFrame = referencesFrame;
+	}
+
+	public void setRefName(String refName) {
+		this.refName = refName;
 	}
 }
