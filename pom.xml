@@ -22,10 +22,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.drkiettran.tika</groupId>
-			<artifactId>text</artifactId>
-			<version>0.1</version>
-			<scope>compile</scope>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-htmlunit-driver</artifactId>
+			<version>2.52.0</version>
 		</dependency>
 
 		<dependency>
@@ -72,10 +71,19 @@
 			<version>1.4.4</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-htmlunit-driver -->
+
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-htmlunit-driver</artifactId>
-			<version>2.52.0</version>
+			<groupId>com.drkiettran.tika</groupId>
+			<artifactId>text</artifactId>
+			<version>0.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.drkiet</groupId>
+			<artifactId>search</artifactId>
+			<version>0.1</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

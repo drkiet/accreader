@@ -31,7 +31,6 @@ public class WebHelper {
 		List<WebElement> sections = driver.findElements(By.xpath(XPATH_TERM_TEXT));
 		List<String> definedTerms = new ArrayList<String>();
 
-		int count = 1;
 		for (WebElement section : sections) {
 			List<WebElement> terms = filterEmptyWebElements(section.findElements(By.xpath("//h3")));
 			terms = driver.findElements(By.xpath(".//*"));
@@ -60,7 +59,6 @@ public class WebHelper {
 				LOGGER.info("*** {} ***", sb.toString());
 			}
 
-			count++;
 		}
 
 		return definedTerms;
@@ -126,10 +124,10 @@ public class WebHelper {
 			return sb.toString();
 		}
 
-		return sb.append("<br><br><b>See Also</b>: ").append(seeAlso).toString();
+		return sb.append("<br><br><b>See Also</b>: <br>").append(seeAlso).toString();
 	}
 
-	public static String getWordDefinition(String url) {
+	public static String getWordDefinition(String url, int fontSize, String font) {
 		WebDriver driver = new HtmlUnitDriver();
 		driver.get(url);
 		StringBuilder sb = new StringBuilder("<b>").append(url).append("</b><br><br>");

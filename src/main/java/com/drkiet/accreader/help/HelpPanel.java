@@ -13,12 +13,12 @@ import com.drkiet.accreader.reference.ReferencesPanel;
 import com.drkiet.accreader.util.FileHelper;
 
 public class HelpPanel extends JPanel {
-	private static final String fonSizeFace = "<font size=\"%d\" face=\"%s\">";
+	public static final String FONT_SIZE_FACE = "<font size=\"%d\" face=\"%s\">";
 
 	private static final long serialVersionUID = -8548706825616512644L;
 
-	public static final String[] startTags = { "<h1>", "<h2>", "<h3>", "<p>", "<li>" },
-			endTags = { "</h1>", "</h2>", "</h3>", "</p>", "</li>" };
+	public static final String[] START_TAGS = { "<h1>", "<h2>", "<h3>", "<p>", "<li>" },
+			END_TAGS = { "</h1>", "</h2>", "</h3>", "</p>", "</li>" };
 
 	private JTextPane textPane;
 	private String text = null;
@@ -40,11 +40,11 @@ public class HelpPanel extends JPanel {
 	}
 
 	private String updateFont(String faqs) {
-		String startFont = String.format(fonSizeFace, textPaneFontSize, textPaneFont);
+		String startFont = String.format(FONT_SIZE_FACE, textPaneFontSize, textPaneFont);
 
-		for (int idx = 0; idx < startTags.length; idx++) {
-			faqs = faqs.replaceAll(startTags[idx], startTags[idx] + startFont);
-			faqs = faqs.replaceAll(endTags[idx], "</font>" + endTags[idx]);
+		for (int idx = 0; idx < START_TAGS.length; idx++) {
+			faqs = faqs.replaceAll(START_TAGS[idx], START_TAGS[idx] + startFont);
+			faqs = faqs.replaceAll(END_TAGS[idx], "</font>" + END_TAGS[idx]);
 		}
 
 		return faqs;

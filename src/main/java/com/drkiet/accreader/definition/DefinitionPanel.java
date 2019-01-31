@@ -2,7 +2,6 @@ package com.drkiet.accreader.definition;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -27,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import com.drkiet.accreader.reference.ReferencesFrame;
 import com.drkiet.accreader.reference.ReferencesPanel;
 import com.drkiet.accreader.util.FileHelper;
+import com.drkiet.accreader.util.FontHelper;
 import com.drkiet.accreader.util.WebHelper;
 import com.drkiettran.text.util.CommonUtils;
 
@@ -112,10 +112,19 @@ public class DefinitionPanel extends JPanel {
 	}
 
 	public void displayDefinition() {
+		LOGGER.info("**** old:\n{}\nnew:\n{}", accDefinition,
+				FontHelper.updateFont(accDefinition, textPaneFontSize, textPaneFont));
 		StringBuilder sb = new StringBuilder("<html>");
-		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(definition).append(FONT_END);
-		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(accDefinition).append(FONT_END);
-		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont)).append(dictDefinitions).append(FONT_END);
+		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont));
+		sb.append(definition);
+		sb.append("<br><font size=\"6\" face=\"Candara\"><p>Greetings!</p></font><br>");
+		sb.append(FONT_END);
+		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont));
+		sb.append(FontHelper.updateFont(accDefinition, textPaneFontSize, textPaneFont));
+		sb.append(FONT_END);
+		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont));
+		sb.append(dictDefinitions);
+		sb.append(FONT_END);
 
 		definitionPane.setText(sb.toString());
 		definitionPane.setCaretPosition(0);

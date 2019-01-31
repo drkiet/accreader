@@ -114,7 +114,9 @@ public class ReferencesPanel extends JPanel {
 			return;
 		}
 		accDefinition = null;
-		displayReference(text);
+		if (ds != null) {
+			displayReference(text);
+		}
 	}
 
 	private void displayReference(String text) {
@@ -159,7 +161,7 @@ public class ReferencesPanel extends JPanel {
 	}
 
 	private void displayHttpText(String url) {
-		this.accDefinition = WebHelper.getWordDefinition(url);
+		this.accDefinition = WebHelper.getWordDefinition(url, textPaneFontSize, textPaneFont);
 		displayText();
 	}
 
