@@ -231,7 +231,7 @@ public class TextPanel extends JPanel {
 					int caretPos = textArea.getCaretPosition();
 					selectedWord = readingTextManager.getWordAt(textArea.getCaretPosition());
 					if (SwingUtilities.isRightMouseButton(e)) {
-						displayDefinitions(selectedWord.getTransformedWord());
+						displayDefinitions(selectedWord.getTransformedWord().replaceAll("'", ""));
 					}
 					try {
 						highlightSelectedWord = highlight(selectedWord.getTransformedWord(),
@@ -240,7 +240,7 @@ public class TextPanel extends JPanel {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					search(selectedWord.getTransformedWord());
+					search(selectedWord.getTransformedWord().replaceAll("'", ""));
 					textArea.setCaretPosition(caretPos);
 				}
 			}

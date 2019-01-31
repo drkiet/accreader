@@ -112,12 +112,9 @@ public class DefinitionPanel extends JPanel {
 	}
 
 	public void displayDefinition() {
-		LOGGER.info("**** old:\n{}\nnew:\n{}", accDefinition,
-				FontHelper.updateFont(accDefinition, textPaneFontSize, textPaneFont));
 		StringBuilder sb = new StringBuilder("<html>");
 		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont));
 		sb.append(definition);
-		sb.append("<br><font size=\"6\" face=\"Candara\"><p>Greetings!</p></font><br>");
 		sb.append(FONT_END);
 		sb.append(String.format(FONT_BEGIN, textPaneFontSize, textPaneFont));
 		sb.append(FontHelper.updateFont(accDefinition, textPaneFontSize, textPaneFont));

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import com.drkiet.accreader.definition.DefinitionFrame;
 import com.drkiet.accreader.definition.DefinitionPanel;
 import com.drkiet.accreader.reference.page.ReferencePageFrame;
 import com.drkiet.accreader.util.FileHelper;
+import com.drkiet.accreader.util.FontHelper;
 import com.drkiet.accreader.util.WebHelper;
 import com.drkiet.search.DocumentSearch;
 
@@ -175,7 +177,8 @@ public class ReferencesPanel extends JPanel {
 			displayingText = "";
 		}
 		StringBuilder sb = new StringBuilder(String.format(DefinitionPanel.FONT_BEGIN, textPaneFontSize, textPaneFont));
-		sb.append(displayingText).append(DefinitionPanel.FONT_END);
+		sb.append(FontHelper.updateFont(displayingText, textPaneFontSize, textPaneFont))
+				.append(DefinitionPanel.FONT_END);
 
 		referencesPane.setText(sb.toString());
 		referencesPane.setCaretPosition(0);
@@ -213,11 +216,12 @@ public class ReferencesPanel extends JPanel {
 
 	public void setRefBook(String refName) {
 		this.refName = refName;
-		if (referencePageFrame == null) {
-			referencePageFrame = new ReferencePageFrame(refName);
-			referencePageFrame.setReferencesFrame(referencesFrame);
-			referencePageFrame.setDefinitionFrame(definitionFrame);
+		if (referencePageFrame != null) {
+			referencePageFrame.dispatchEvent(new WindowEvent(referencePageFrame, WindowEvent.WINDOW_CLOSING));
 		}
+		referencePageFrame = new ReferencePageFrame(refName);
+		referencePageFrame.setReferencesFrame(referencesFrame);
+		referencePageFrame.setDefinitionFrame(definitionFrame);
 		referencePageFrame.setRefBook(refName);
 		loadRefsDocument();
 	}

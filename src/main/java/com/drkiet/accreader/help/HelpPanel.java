@@ -17,8 +17,8 @@ public class HelpPanel extends JPanel {
 
 	private static final long serialVersionUID = -8548706825616512644L;
 
-	public static final String[] START_TAGS = { "<h1>", "<h2>", "<h3>", "<p>", "<li>" },
-			END_TAGS = { "</h1>", "</h2>", "</h3>", "</p>", "</li>" };
+	public static final String[] START_TAGS = { "<h1", "<h2", "<h3", "<p", "<li", "<a" },
+			END_TAGS = { "</h1>", "</h2>", "</h3>", "</p>", "</li>", "</a>" };
 
 	private JTextPane textPane;
 	private String text = null;
