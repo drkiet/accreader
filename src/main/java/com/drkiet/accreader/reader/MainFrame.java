@@ -195,6 +195,7 @@ public class MainFrame extends JFrame {
 		case RESET:
 			resetReading();
 			break;
+
 		default:
 			break;
 		}
@@ -205,31 +206,58 @@ public class MainFrame extends JFrame {
 		case LOAD:
 			loadSelectedBook();
 			break;
+
 		case LOAD_REF:
-			refName = formPanel.getRefBook();
-			textPanel.setRefBook(refName);
-			LOGGER.info("Loading Reference: {}", refName);
+			loadSelectedRefBook();
 			break;
+
 		case SELECT_BOOK:
 			selectedBookName = formPanel.getSelectedBookName();
 			LOGGER.info("Selected book {}", selectedBookName);
 			break;
+
 		case SELECT_TRANSLATION:
 			selectedTranslation = formPanel.getselectedTranslation();
 			LOGGER.info("Selected translation {}", selectedTranslation);
-		case SEARCH:
-			searchText = formPanel.getSearchText();
-			searchText(searchText);
-			searchTextInDocument(searchText);
 			break;
+
+		case SEARCH:
+			search();
+			break;
+
 		case NEXT_FIND:
 			nextFind();
 			break;
+
 		case GOTO:
 			goToPage(formPanel.getGotoPageNo());
+			break;
+
 		default:
 			break;
 		}
+	}
+
+	public void search() {
+		if (isNewSearchText()) {
+			searchText(searchText);
+			searchTextInDocument(searchText);
+		}
+	}
+
+	private boolean isNewSearchText() {
+		if (searchText.equalsIgnoreCase(formPanel.getSearchText())) {
+			return false;
+		}
+		searchText = formPanel.getSearchText().toLowerCase();
+		return true;
+	}
+
+	public void loadSelectedRefBook() {
+		refName = formPanel.getRefBook();
+		textPanel.setRefBook(refName);
+		searchText = "";
+		LOGGER.info("Loading Reference: {}", refName);
 	}
 
 	private void nextFind() {
@@ -311,6 +339,7 @@ public class MainFrame extends JFrame {
 			sb.append('\n').append(bookName).append(" fails to load!\n");
 			infoPanel.addText(sb.toString());
 		}
+		searchText = "";
 	}
 
 	public void startReadingAtCaret() {
