@@ -47,7 +47,6 @@ public class ReferencesPanel extends JPanel {
 	private String refName = "";
 
 	public ReferencesPanel() {
-//		loadRefsDocument();
 		referencesPane = new JTextPane();
 		referencesPane.setCaretPosition(0);
 		referencesPane.setCaretColor(Color.WHITE);
@@ -92,11 +91,11 @@ public class ReferencesPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				if (referencesPane.getSelectedText() != null) { // See if they selected something
 					highlightedText = referencesPane.getSelectedText().trim();
-					if (referencePageFrame == null) {
-						referencePageFrame = new ReferencePageFrame(refName);
-						referencePageFrame.setReferencesFrame(referencesFrame);
-						referencePageFrame.setDefinitionFrame(definitionFrame);
-					}
+//					if (referencePageFrame == null) {
+//						referencePageFrame = new ReferencePageFrame(refName);
+//						referencePageFrame.setReferencesFrame(referencesFrame);
+//						referencePageFrame.setDefinitionFrame(definitionFrame);
+//					}
 					referencePageFrame.setPageNumber(Integer.valueOf(highlightedText), searchText);
 					LOGGER.info("highlighted page: {} for {}", highlightedText, searchText);
 				}
@@ -126,7 +125,10 @@ public class ReferencesPanel extends JPanel {
 		HashMap<Integer, Integer> pageNumbersMap = searchReferences(text);
 		List<Integer> pageNumbersList = new ArrayList<Integer>();
 		pageNumbersList.addAll(pageNumbersMap.keySet());
+
 		Collections.sort(pageNumbersList);
+		Integer firstFoundPageNumber = pageNumbersList.get(0);
+
 		StringBuilder sb = new StringBuilder("<b>").append(text);
 
 		if (pageNumbersList.isEmpty()) {
@@ -136,18 +138,43 @@ public class ReferencesPanel extends JPanel {
 		}
 
 		for (Integer pageNumber : pageNumbersList) {
-			sb.append(pageNumber);
+
 			if (pageNumbersMap.get(pageNumber) > 1) {
-				sb.append('(').append(pageNumbersMap.get(pageNumber)).append(')');
+				boolean exactMatchFound = exactMatchFound(text, pageNumbersMap, pageNumber);
+
+				if (exactMatchFound) {
+					sb.append("<b>");
+				}
+
+				sb.append(pageNumber);
+
+				if (exactMatchFound) {
+					sb.append("<sup>").append(pageNumbersMap.get(pageNumber)).append("</sup>");
+				} else {
+					sb.append("<sub>").append(pageNumbersMap.get(pageNumber)).append("</sub>");
+				}
+
+				if (exactMatchFound) {
+					sb.append("</b>");
+				}
+			} else {
+				sb.append(pageNumber);
 			}
 			sb.append(", ");
 		}
 		this.referenceText = sb.toString();
+		referencePageFrame.setFoundPageMap(pageNumbersMap);
+		referencePageFrame.setPageNumber(firstFoundPageNumber, searchText);
 		displayText();
 	}
 
+	public boolean exactMatchFound(String text, HashMap<Integer, Integer> pageNumbersMap, Integer pageNumber) {
+		return pageNumbersMap.get(pageNumber) == splitText(text).length
+				&& referencePageFrame.exactMatchFoundOnPage(pageNumber, text);
+	}
+
 	public HashMap<Integer, Integer> searchReferences(String searchText) {
-		String[] searchWords = searchText.split(" ");
+		String[] searchWords = splitText(searchText);
 		HashMap<Integer, Integer> foundPageNumbers = new HashMap<Integer, Integer>();
 
 		for (String searchWord : searchWords) {
@@ -160,6 +187,10 @@ public class ReferencesPanel extends JPanel {
 			}
 		}
 		return foundPageNumbers;
+	}
+
+	public String[] splitText(String searchText) {
+		return searchText.split(" ");
 	}
 
 	private void displayHttpText(String url) {

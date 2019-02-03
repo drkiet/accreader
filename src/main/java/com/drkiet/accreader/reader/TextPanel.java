@@ -28,6 +28,7 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import javax.swing.text.Highlighter.HighlightPainter;
 
+import org.elasticsearch.common.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -315,7 +316,7 @@ public class TextPanel extends JPanel {
 					}
 				}
 
-				LOGGER.debug("{}. caret: {}; word: {}", getCurrentLineNumber(), textArea.getCaretPosition(), curWord);
+				//	LOGGER.debug("{}. caret: {}; word: {}", getCurrentLineNumber(), textArea.getCaretPosition(), curWord);
 				repaint();
 			} catch (BadLocationException e1) {
 				e1.printStackTrace();
@@ -383,10 +384,6 @@ public class TextPanel extends JPanel {
 	public List<String> ARTICLES = Arrays.asList(THE_ARTICLES);
 
 	private boolean skipArticle;
-
-	private MainFrame mainFrame;
-
-	private String refName;
 
 	public void skipArticle(boolean skipArticle) {
 		this.skipArticle = skipArticle;
@@ -587,13 +584,19 @@ public class TextPanel extends JPanel {
 		readingTextManager = page.getRtm();
 
 		readingText = readingTextManager.getReadingText();
+		
 		if (emptyReadingText()) {
 			textArea.setText("*** PAGE IS EMPTY! ***");
 		} else {
 			displayText();
 		}
+		
 		textArea.setCaretPosition(0);
 		displayReadingInformation();
+		
+		if (!Strings.isNullOrEmpty(searchText)) {
+			search(searchText);
+		}
 		repaint();
 	}
 
@@ -650,11 +653,9 @@ public class TextPanel extends JPanel {
 	}
 
 	public void setMainFrame(MainFrame mainFrame) {
-		this.mainFrame = mainFrame;
 	}
 
 	public void setRefBook(String refName) {
-		this.refName = refName;
 		referencesFrame.setRefBook(refName);
 	}
 }

@@ -65,11 +65,11 @@ public class Toolbar extends JPanel implements ActionListener {
 		smallerTextFontButton.setToolTipText("Smaller text size");
 
 		previousPageButton = new JButton();
-		previousPageButton.setIcon(createIcon("/icons/previous16.gif"));
+		previousPageButton.setIcon(createIcon("/icons/Previous16.gif"));
 		previousPageButton.setToolTipText("Previous Chapter");
 
 		nextPageButton = new JButton();
-		nextPageButton.setIcon(createIcon("/icons/next16.gif"));
+		nextPageButton.setIcon(createIcon("/icons/Next16.gif"));
 		nextPageButton.setToolTipText("Next Chapter");
 
 		largerWordFontButton = new JButton();

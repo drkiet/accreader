@@ -222,7 +222,7 @@ public class MainFrame extends JFrame {
 			searchText(searchText);
 			searchTextInDocument(searchText);
 			break;
-		case NEXTFIND:
+		case NEXT_FIND:
 			nextFind();
 			break;
 		case GOTO:

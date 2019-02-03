@@ -124,7 +124,7 @@ public class FormPanel extends JPanel {
 		});
 
 		nextFindButton.addActionListener((ActionEvent actionEvent) -> {
-			readerListener.invoke(Command.NEXTFIND);
+			readerListener.invoke(Command.NEXT_FIND);
 		});
 
 		goToPageNoButton.addActionListener((ActionEvent actionEvent) -> {

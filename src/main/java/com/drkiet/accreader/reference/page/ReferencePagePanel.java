@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +31,7 @@ import com.drkiettran.text.TextApp;
 import com.drkiettran.text.model.Document;
 
 public class ReferencePagePanel extends JPanel {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePageFrame.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencePagePanel.class);
 
 	private static final long serialVersionUID = -8244136736985618463L;
 	public static final int SMALLEST_TEXT_AREA_FONT_SIZE = 3;
@@ -47,6 +48,12 @@ public class ReferencePagePanel extends JPanel {
 	private Integer pageNumber;
 
 	private String refName;
+
+	private String foundText;
+
+	private HashMap<Integer, Integer> pageNumbersMap;
+
+	private ArrayList<Integer> pageNumbersList;
 
 	public ReferencePagePanel(String refName) {
 		this.refName = refName;
@@ -99,7 +106,7 @@ public class ReferencePagePanel extends JPanel {
 			public void mouseExited(MouseEvent e) {
 				if (referencePagePane.getSelectedText() != null) { // See if they selected something
 					highlightedText = referencePagePane.getSelectedText().trim();
-					LOGGER.info("highlighted text: {}", highlightedText);
+//					LOGGER.info("highlighted text: {}", highlightedText);
 					referencesFrame.setText(highlightedText);
 				}
 			}
@@ -195,14 +202,13 @@ public class ReferencePagePanel extends JPanel {
 
 	public void setPageNumber(Integer pageNumber, String foundText) {
 		this.pageNumber = pageNumber;
+		this.foundText = foundText;
 		document.setPageNo(pageNumber);
-		StringBuilder sb = new StringBuilder("<b>Page ").append(pageNumber).append("</b>:<br>");
-		sb.append("<p>").append(getHighlightedPage(foundText)).append("</p>");
-		refPageText = sb.toString();
+		makeRefPage();
 		displayPage();
 	}
 
-	public String getHighlightedPage(String foundText) {
+	public String getHighlightedPage() {
 		String highlightedPage = document.getCurrentPage().getRtm().getText().replaceAll("\n", "<br>");
 
 		String[] highlightedWords = foundText.split(" ");
@@ -213,7 +219,7 @@ public class ReferencePagePanel extends JPanel {
 			highlightedPage = highlightedPage.replaceAll(highlightedWord,
 					String.format("<b><u>%s</u></b>", highlightedWord));
 		}
-		LOGGER.info("highlightedPage: {}", highlightedPage);
+//		LOGGER.info("highlightedPage: {}", highlightedPage);
 		return highlightedPage;
 	}
 
@@ -256,5 +262,104 @@ public class ReferencePagePanel extends JPanel {
 
 	public void setRefName(String refName) {
 		this.refName = refName;
+	}
+
+	public boolean exactMatchFoundOnPage(Integer pageNumber, String searchText) {
+		document.setPageNo(pageNumber);
+		return document.getCurrentPage().getRtm().getText().toLowerCase().contains(searchText.toLowerCase());
+	}
+
+	public void previousFindPage() {
+		for (int idx = pageNumbersList.size() - 1; idx >= 0; idx--) {
+			if (pageNumbersList.get(idx) < this.pageNumber) {
+				this.pageNumber = pageNumbersList.get(idx);
+				break;
+			}
+		}
+		document.setPageNo(pageNumber);
+		makeRefPage();
+		displayPage();
+	}
+
+	public void nextFindPage() {
+		for (int idx = 0; idx < pageNumbersList.size(); idx++) {
+			if (pageNumbersList.get(idx) > this.pageNumber) {
+				this.pageNumber = pageNumbersList.get(idx);
+				break;
+			}
+		}
+
+		document.setPageNo(pageNumber);
+		makeRefPage();
+		displayPage();
+	}
+
+	public void previousPage() {
+		document.previousPage();
+		pageNumber = document.getCurrentPageNumber();
+		makeRefPage();
+		displayPage();
+	}
+
+	public void nextPage() {
+		document.nextPage();
+		pageNumber = document.getCurrentPageNumber();
+		makeRefPage();
+		displayPage();
+	}
+
+	public void makeRefPage() {
+		StringBuilder sb = new StringBuilder("<b>Page ").append(pageNumber).append("</b>:<br>");
+		sb.append("<p>").append(getHighlightedPage()).append("</p>");
+		refPageText = sb.toString();
+	}
+
+	public void setFoundPageMap(HashMap<Integer, Integer> pageNumbersMap) {
+		this.pageNumbersMap = pageNumbersMap;
+		pageNumbersList = new ArrayList<Integer>();
+		pageNumbersList.addAll(pageNumbersMap.keySet());
+		Collections.sort(pageNumbersList);
+	}
+
+	public String[] splitText(String searchText) {
+		return searchText.split(" ");
+	}
+
+	public boolean exactMatchFound(String text, Integer pageNumber) {
+		return pageNumbersMap.get(pageNumber) == splitText(text).length && exactMatchFoundOnPage(pageNumber, text);
+	}
+
+	public void previousExactMatchPage() {
+		Integer currentPageNumber = pageNumber;
+
+		for (int idx = pageNumbersList.size() - 1; idx >= 0; idx--) {
+			if (pageNumbersList.get(idx) < currentPageNumber) {
+				currentPageNumber = pageNumbersList.get(idx);
+				if (exactMatchFound(foundText, currentPageNumber)) {
+					pageNumber = currentPageNumber;
+					document.setPageNo(pageNumber);
+					makeRefPage();
+					displayPage();
+					break;
+				}
+			}
+		}
+	}
+
+	public void nextExactMatchPage() {
+		Integer currentPageNumber = pageNumber;
+
+		for (int idx = 0; idx < pageNumbersList.size(); idx++) {
+			if (pageNumbersList.get(idx) > currentPageNumber) {
+				currentPageNumber = pageNumbersList.get(idx);
+				if (exactMatchFound(foundText, currentPageNumber)) {
+					pageNumber = currentPageNumber;
+					document.setPageNo(pageNumber);
+					makeRefPage();
+					displayPage();
+					break;
+				}
+			}
+		}
 	}
 }
