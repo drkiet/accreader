@@ -4,25 +4,18 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.drkiet.accreader.definition.DefinitionFrame;
-import com.drkiet.accreader.reader.InfoPanel;
 import com.drkiet.accreader.reference.ReaderListener.Command;
 import com.drkiet.accreader.util.FileHelper;
 import com.drkiet.accreader.util.ScreenPositions;
-import com.drkiettran.text.model.Document;
 
 public class ReferencesFrame extends JFrame {
 
 	private static final long serialVersionUID = 4689102811730742079L;
 	private ReferencesPanel referencesPanel;
 	private ReferencesToolbarPanel referencesToolbarPanel;
-	private DefinitionFrame definitionFrame;
-	private Document document;
-	private InfoPanel infoPanel;
 	private String refName = "";
+	private String referenceText = "";
 
 	public ReferencesFrame() {
 		setLayout(new BorderLayout());
@@ -54,8 +47,6 @@ public class ReferencesFrame extends JFrame {
 		setVisible(true);
 	}
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ReferencesFrame.class);
-
 	private void makeSmallerFont() {
 		referencesPanel.setSmallerText();
 	}
@@ -65,21 +56,22 @@ public class ReferencesFrame extends JFrame {
 	}
 
 	public void setText(String referenceText) {
+		if (this.referenceText.equalsIgnoreCase(referenceText)) {
+			return;
+		}
+
+		this.referenceText = referenceText;
 		referencesPanel.setText(referenceText);
 	}
 
 	public void setDefinitionFrame(DefinitionFrame definitionFrame) {
-		this.definitionFrame = definitionFrame;
 		referencesPanel.setDefinitionFrame(definitionFrame);
 		referencesPanel.setReferencesFrame(this);
 	}
 
-	public void setInfoPanel(InfoPanel infoPanel) {
-		this.infoPanel = infoPanel;
-	}
-
 	public void setRefBook(String refName) {
 		this.refName = refName;
+		this.referenceText = "";
 		referencesPanel.setRefBook(refName);
 	}
 }

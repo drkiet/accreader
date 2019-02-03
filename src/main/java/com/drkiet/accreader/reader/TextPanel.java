@@ -130,7 +130,6 @@ public class TextPanel extends JPanel {
 	private void setObjectLinks() {
 		definitionFrame.setReferencesFrame(referencesFrame);
 		referencesFrame.setDefinitionFrame(definitionFrame);
-		referencesFrame.setInfoPanel(infoPanel);
 		definitionFrame.setInfoPanel(infoPanel);
 	}
 
@@ -316,7 +315,8 @@ public class TextPanel extends JPanel {
 					}
 				}
 
-				//	LOGGER.debug("{}. caret: {}; word: {}", getCurrentLineNumber(), textArea.getCaretPosition(), curWord);
+				// LOGGER.debug("{}. caret: {}; word: {}", getCurrentLineNumber(),
+				// textArea.getCaretPosition(), curWord);
 				repaint();
 			} catch (BadLocationException e1) {
 				e1.printStackTrace();
@@ -584,16 +584,16 @@ public class TextPanel extends JPanel {
 		readingTextManager = page.getRtm();
 
 		readingText = readingTextManager.getReadingText();
-		
+
 		if (emptyReadingText()) {
 			textArea.setText("*** PAGE IS EMPTY! ***");
 		} else {
 			displayText();
 		}
-		
+
 		textArea.setCaretPosition(0);
 		displayReadingInformation();
-		
+
 		if (!Strings.isNullOrEmpty(searchText)) {
 			search(searchText);
 		}

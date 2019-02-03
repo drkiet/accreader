@@ -14,8 +14,7 @@ public class DefinitionFrame extends JFrame {
 	private static final long serialVersionUID = 4689102811730742079L;
 	private DefinitionPanel definitionPanel;
 	private DefinitionToolbarPanel definitionToolbarPanel;
-	private ReferencesFrame referencesFrame;
-	private InfoPanel infoPanel;
+	private String word = "";
 
 	public DefinitionFrame() {
 		setLayout(new BorderLayout());
@@ -56,15 +55,18 @@ public class DefinitionFrame extends JFrame {
 	}
 
 	public void setDefinition(String word) {
+		if (this.word.equalsIgnoreCase(word)) {
+			return;
+		}
+
+		this.word = word;
 		definitionPanel.setDefinition(word.toLowerCase());
 	}
 
 	public void setReferencesFrame(ReferencesFrame referencesFrame) {
-		this.referencesFrame = referencesFrame;
 		definitionPanel.setReferencesFrame(referencesFrame);
 	}
 
 	public void setInfoPanel(InfoPanel infoPanel) {
-		this.infoPanel = infoPanel;
 	}
 }
