@@ -30,3 +30,4 @@ You perform the following activities:
 
 ## How do I pause the speed reader?
 Use the pause button to pause the reading. To resume, click on the Play (Read) button.
+
