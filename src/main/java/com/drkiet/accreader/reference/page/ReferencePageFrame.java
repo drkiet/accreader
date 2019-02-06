@@ -22,7 +22,7 @@ public class ReferencePageFrame extends JFrame {
 
 	public ReferencePageFrame(String refName) {
 		setLayout(new BorderLayout());
-		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName(refName));
+		setTitle("Reference Contents");
 		setSize(600, 500);
 		referencePagePanel = new ReferencePagePanel(FileHelper.getFQRefencesFileName(refName));
 		referencePageToolbarPanel = new ReferencePageToolbarPanel();

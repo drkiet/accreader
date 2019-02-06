@@ -55,7 +55,7 @@ public class ReferencesPanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(new JScrollPane(referencesPane), BorderLayout.CENTER);
 		referencesPane.addMouseListener(getMouseListner());
-		setBorder();
+		setBorder("References");
 	}
 
 	private MouseListener getMouseListner() {
@@ -215,8 +215,8 @@ public class ReferencesPanel extends JPanel {
 		referencesPane.setCaretPosition(0);
 	}
 
-	private void setBorder() {
-		Border innerBorder = BorderFactory.createTitledBorder("References");
+	private void setBorder(String fileName) {
+		Border innerBorder = BorderFactory.createTitledBorder(fileName);
 		Border outterBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
 	}
@@ -255,5 +255,6 @@ public class ReferencesPanel extends JPanel {
 		referencePageFrame.setDefinitionFrame(definitionFrame);
 		referencePageFrame.setRefBook(refName);
 		loadRefsDocument();
+		setBorder(refName);
 	}
 }

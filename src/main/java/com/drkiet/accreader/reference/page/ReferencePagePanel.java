@@ -69,7 +69,7 @@ public class ReferencePagePanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(new JScrollPane(referencePagePane), BorderLayout.CENTER);
 		referencePagePane.addMouseListener(getMouseListner());
-		setBorder();
+		setBorder("References");
 	}
 
 	private MouseListener getMouseListner() {
@@ -174,8 +174,8 @@ public class ReferencePagePanel extends JPanel {
 		referencePagePane.setCaretPosition(0);
 	}
 
-	private void setBorder() {
-		Border innerBorder = BorderFactory.createTitledBorder("References");
+	private void setBorder(String fileName) {
+		Border innerBorder = BorderFactory.createTitledBorder(fileName);
 		Border outterBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
 	}
@@ -262,6 +262,7 @@ public class ReferencePagePanel extends JPanel {
 
 	public void setRefName(String refName) {
 		this.refName = refName;
+		setBorder(refName);
 	}
 
 	public boolean exactMatchFoundOnPage(Integer pageNumber, String searchText) {

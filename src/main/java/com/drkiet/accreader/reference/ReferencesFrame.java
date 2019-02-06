@@ -19,7 +19,7 @@ public class ReferencesFrame extends JFrame {
 
 	public ReferencesFrame() {
 		setLayout(new BorderLayout());
-		setTitle("Refereces file: " + FileHelper.getFQRefencesFileName(refName));
+		setTitle("Refereces");
 		setSize(600, 500);
 		referencesPanel = new ReferencesPanel();
 		referencesToolbarPanel = new ReferencesToolbarPanel();

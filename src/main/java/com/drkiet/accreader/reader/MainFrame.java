@@ -216,11 +216,6 @@ public class MainFrame extends JFrame {
 			LOGGER.info("Selected book {}", selectedBookName);
 			break;
 
-		case SELECT_TRANSLATION:
-			selectedTranslation = formPanel.getselectedTranslation();
-			LOGGER.info("Selected translation {}", selectedTranslation);
-			break;
-
 		case SEARCH:
 			search();
 			break;

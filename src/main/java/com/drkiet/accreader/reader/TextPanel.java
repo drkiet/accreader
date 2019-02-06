@@ -122,7 +122,7 @@ public class TextPanel extends JPanel {
 
 	public TextPanel() {
 		arrangeFixedComponents();
-		setBorder();
+		setBorder("Reader");
 		arrangeLayout();
 		setObjectLinks();
 	}
@@ -179,8 +179,8 @@ public class TextPanel extends JPanel {
 		add(new JScrollPane(textArea), BorderLayout.CENTER);
 	}
 
-	private void setBorder() {
-		Border innerBorder = BorderFactory.createTitledBorder("Reader");
+	private void setBorder(String bookName) {
+		Border innerBorder = BorderFactory.createTitledBorder(bookName);
 		Border outterBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outterBorder, innerBorder));
 	}
@@ -558,6 +558,7 @@ public class TextPanel extends JPanel {
 
 	public void loadTextFromFile(Document document) {
 		this.document = document;
+		setBorder((String) document.getBookFileName());
 		addTextPane();
 		displayPageText(document.getCurrentPage());
 	}
