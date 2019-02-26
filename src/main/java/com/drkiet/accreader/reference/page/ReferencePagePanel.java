@@ -107,7 +107,7 @@ public class ReferencePagePanel extends JPanel {
 				if (referencePagePane.getSelectedText() != null) { // See if they selected something
 					highlightedText = referencePagePane.getSelectedText().trim();
 //					LOGGER.info("highlighted text: {}", highlightedText);
-					referencesFrame.setText(highlightedText);
+//					referencesFrame.setText(highlightedText);
 				}
 			}
 
